@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+	<head></head>
+	<body>
+		<div layout:fragment="content">
+			<h2 >KY POTA Contest Home</h2>
+	
+			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+			
+			<div sec:authorize="isAuthenticated()">
+			  <a th:href="@{/logout}">Log out</a>
+			</div>
+			<div sec:authorize="isAnonymous()">
+			  <a th:href="@{/login}">Log in</a>
+			</div>
+			
+			<div sec:authorize="isAuthenticated()">
+	      Authenticated as <span sec:authentication="name"></span></div>
+	      
+	        <form th:action="@{/logout}" method="post">
+	            <input type="submit" value="Sign Out"/>
+	        </form>
+        
+        	<br><br><br><hr><br><br>
+        	<a th:href="@{/upload}">Upload New Log file</a>
+        	<br><br><br>
+        </div>
+	</body>
+</html>
