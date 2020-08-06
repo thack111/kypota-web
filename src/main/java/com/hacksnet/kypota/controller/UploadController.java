@@ -47,12 +47,14 @@ public class UploadController {
 	
 
 	@RequestMapping(method=RequestMethod.POST)
-	public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam String name,
-			  @RequestParam String email,
+	public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
+			  @RequestParam("email") String submittedEmail,
 			RedirectAttributes redirectAttributes) throws IOException {
 
 		System.out.println("Found file " + file.getOriginalFilename() + "!");
 		ContestLog logFile = new ContestLog();
+		logFile.setSubmittedName(submittedName);
+		logFile.setSubmittedEmail(submittedEmail);
 		List<LogQso> qsos = new ArrayList<>();
 		StringBuffer rawLog = new StringBuffer();
 		int qsoCount = 0;

@@ -34,6 +34,8 @@ public class ContestLog {
 	private String timeStart;
 	private String timeEnd;
 	private List<LogQso> qsos;
+	private String submittedName;
+	private String submittedEmail;
 	
 	public int getLogId() {
 		return logId;
@@ -214,6 +216,18 @@ public class ContestLog {
 	}
 	public void setQsos(List<LogQso> qsos) {
 		this.qsos = qsos;
+	}
+	public String getSubmittedName() {
+		return submittedName;
+	}
+	public void setSubmittedName(String submittedName) {
+		this.submittedName = submittedName;
+	}
+	public String getSubmittedEmail() {
+		return submittedEmail;
+	}
+	public void setSubmittedEmail(String submittedEmail) {
+		this.submittedEmail = submittedEmail;
 	}
 	
 

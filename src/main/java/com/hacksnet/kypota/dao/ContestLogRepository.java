@@ -35,11 +35,11 @@ public class ContestLogRepository {
 		String sql = "insert into kypota.logs (log_id, entered_on, log_type, format, location, callsign, club, contest, " +
 						"   cat_operator, cat_assisted, cat_band, cat_mode, cat_power, cat_station, cat_transmitter, " +
 						"   claimed_score, operators, name, address, city, state, zip, country, email, grid_loc, soap_box, " +
-						"   time_start, time_end, raw_log) "+
+						"   time_start, time_end, raw_log, submitted_name, submitted_email) "+
 				     "values  (:log_id, sysdate, :log_type, :format, :location, :callsign, :club, :contest, " + 
 				        "   :cat_operator, :cat_assisted, :cat_band, :cat_mode, :cat_power, :cat_station, :cat_transmitter, " + 
 				        "   :claimed_score, :operators, :name, :address, :city, :state, :zip, :country, :email, :grid_loc, :soap_box, " + 
-				        "   :time_start, :time_end, :raw_log)";
+				        "   :time_start, :time_end, :raw_log, :submitted_name, :submitted_email)";
 		SqlParameterSource namedParam = new MapSqlParameterSource().addValue("log_id", log.getLogId())
 																	.addValue("log_type", log.getLogType())
 																	.addValue("format", log.getFormat())
@@ -67,7 +67,9 @@ public class ContestLogRepository {
 																	.addValue("soap_box", log.getSoapBox())
 																	.addValue("time_start", log.getTimeStart())
 																	.addValue("time_end", log.getTimeEnd())
-																	.addValue("raw_log", log.getRawLog());
+																	.addValue("raw_log", log.getRawLog())
+																	.addValue("submitted_name", log.getSubmittedName())
+																	.addValue("submitted_email", log.getSubmittedEmail());
 
 		int logAdded =namedJdbc.update(sql, namedParam);
 		
