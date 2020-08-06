@@ -1,8 +1,11 @@
 package com.hacksnet.kypota.model;
 
+import java.util.List;
+
 public class ContestLog {
 
 	private int logId;
+	private String rawLog;
 	private String enteredOn;
 	private String logType;
 	private String format;
@@ -28,11 +31,21 @@ public class ContestLog {
 	private String email;
 	private String gridLoc;
 	private String soapBox;
+	private String timeStart;
+	private String timeEnd;
+	private List<LogQso> qsos;
+	
 	public int getLogId() {
 		return logId;
 	}
 	public void setLogId(int logId) {
 		this.logId = logId;
+	}
+	public String getRawLog() {
+		return rawLog;
+	}
+	public void setRawLog(String rawLog) {
+		this.rawLog = rawLog;
 	}
 	public String getEnteredOn() {
 		return enteredOn;
@@ -184,7 +197,24 @@ public class ContestLog {
 	public void setSoapBox(String soapBox) {
 		this.soapBox = soapBox;
 	}
+	public String getTimeStart() {
+		return timeStart;
+	}
+	public void setTimeStart(String timeStart) {
+		this.timeStart = timeStart;
+	}
+	public String getTimeEnd() {
+		return timeEnd;
+	}
+	public void setTimeEnd(String timeEnd) {
+		this.timeEnd = timeEnd;
+	}
+	public List<LogQso> getQsos() {
+		return qsos;
+	}
+	public void setQsos(List<LogQso> qsos) {
+		this.qsos = qsos;
+	}
 	
-	
-	
+
 }

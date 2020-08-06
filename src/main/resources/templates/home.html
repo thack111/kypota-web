@@ -6,8 +6,15 @@
 		<div layout:fragment="content">
 			<h2 >KY POTA Contest Home</h2>
 	
+			<div th:if="${message}">
+				<h2 th:text="${message}"/>
+			</div>
+	
 			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 			
+			<br><br><hr>
+			[[${#httpServletRequest.getServletPath()}]]
+			<br><br>
 			<div sec:authorize="isAuthenticated()">
 			  <a th:href="@{/logout}">Log out</a>
 			</div>
@@ -24,6 +31,8 @@
         
         	<br><br><br><hr><br><br>
         	<a th:href="@{/upload}">Upload New Log file</a>
+        	<br><br><br>
+        	<a th:href="@{/results}">Show Results</a>
         	<br><br><br>
         </div>
 	</body>

@@ -6,9 +6,11 @@
 		<div layout:fragment="content">
 			<h2 >KY POTA Contest Home</h2>
 	
-			
-	      
-	        <form method="post">
+			<a th:href="@{/}">Cancel and Return Home</a><br><br>
+	        <form method="post"  enctype="multipart/form-data">
+	        	User Name: <input type="text" name="name"><br>
+	        	User Email: <input type="text" name="email"><br>
+	        	KY POTA Log file: <input type="file" name="file"><br>
 	            <input type="submit" value="Upload Log"/>
 	        </form>
         

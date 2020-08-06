@@ -4,6 +4,7 @@ public class LogQso {
 
 	private int logId;
 	private int qsoId;
+	private String freq;
 	private String qsoMode;
 	private String qsoDate;
 	private String sntCall;
@@ -12,6 +13,15 @@ public class LogQso {
 	private String rcvCall;
 	private String rcvRst;
 	private String rcvExch;
+	private String transmitterId;
+	
+	
+	public String getFreq() {
+		return freq;
+	}
+	public void setFreq(String freq) {
+		this.freq = freq;
+	}
 	public int getLogId() {
 		return logId;
 	}
@@ -71,6 +81,12 @@ public class LogQso {
 	}
 	public void setRcvExch(String rcvExch) {
 		this.rcvExch = rcvExch;
+	}
+	public String getTransmitterId() {
+		return transmitterId;
+	}
+	public void setTransmitterId(String transmitterId) {
+		this.transmitterId = transmitterId;
 	}
 	
 	

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org:">
+	<head>
+	</head>
+	<body>
+		<header>
+		<nav th:fragment="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+			<a class="navbar-brand" href="/">KYPOTA</a>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav mr-auto">
+				<li th:class="${#httpServletRequest.getServletPath().equals('/')} ? 'nav-item active' : 'nav-item'">
+					<a class="nav-link" th:href="@{/}">Home</a>
+				</li>
+				<li th:class="${#httpServletRequest.getServletPath().equals('/results')} ? 'nav-item active' : 'nav-item'">
+					<a class="nav-link" th:href="@{/results}">Results</a>
+				</li>
+				<li th:class="${#httpServletRequest.getServletPath().equals('/upload')} ? 'nav-item active' : 'nav-item'">
+					<a class="nav-link" th:href="@{/upload}">Upload Log</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Link</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+				</li>
+			</ul>
+			
+			<ul class="navbar-nav ml-md-auto">
+		    <li class="nav-item dropdown">
+		      <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		        v4.5
+		      </a>
+		      <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+		        <a class="dropdown-item active" href="/docs/4.5/">Latest (4.5.x)</a>
+		        <div class="dropdown-divider"></div>
+		        <a class="dropdown-item" href="https://getbootstrap.com/docs/3.4/">v3.4.1</a>
+		        <a class="dropdown-item" href="https://getbootstrap.com/2.3.2/">v2.3.2</a>
+		        <div class="dropdown-divider"></div>
+		        <a class="dropdown-item" href="/docs/versions/">All versions</a>
+		      </div>
+		    </li>
+		
+		  </ul>
+			      <form class="form-inline mt-2 mt-md-0">
+			        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+			        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			      </form>
+			    </div>
+			  </nav>
+
+  
+  
+
+
+				
+				
+				</header>
+				
+			</div>
+		</nav>
+		
+	</body>
+</html>
+
+
+
