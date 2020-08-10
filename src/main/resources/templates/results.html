@@ -10,8 +10,33 @@
 				<h2 th:text="${message}"/>
 			</div>
 	
-			This is the results Page!  More to come soon
-        
+			<div class="card bg-light text-dark">
+				<div class="card-body">
+					Here are the 2020 results.  These are build based on the logs submitted.  Please check the contest rules for more information on how the scrores are counted.<br><br>
+				</div>
+			</div>
+			<table class="table table-striped table-bordered">
+			    <thead>
+			     	<tr>
+				        <th>Email</th>
+				        <th>Name</th>
+				        <th>QSO Points</th>
+				        <th># Park 2 Park</th>
+				        <th># Bonus Stations</th>
+				        <th>Total Score</th>
+			      	</tr>
+			    </thead>
+			    <tbody>
+			      	<tr th:each="result : ${results}">
+				        <td th:text="${result.submittedEmail}"></td>
+				        <td th:text="${result.submittedName}"></td>
+				        <td th:text="${result.numQsoPoints}"></td>
+				        <td th:text="${result.numPark2Park}"></td>
+				        <td th:text="${result.numBonus}"></td>
+				        <td th:text="${result.totalScore}"></td>
+			      	</tr>
+	        	</tbody>
+	        </table>
 
         </div>
 	</body>
