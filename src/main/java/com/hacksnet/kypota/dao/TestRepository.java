@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 public class TestRepository {
 	
 	private JdbcTemplate jdbc;
-	private NamedParameterJdbcTemplate namedJdbc;
+	//private NamedParameterJdbcTemplate namedJdbc;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbc = new JdbcTemplate(dataSource);
-		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
+		//this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
 	}	
 	
 	

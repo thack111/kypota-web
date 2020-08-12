@@ -12,6 +12,9 @@
 	
 			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 			
+			<div sec:authorize="isAuthenticated()">
+	      Authenticated as <span sec:authentication="name"></span></div>
+			
 			<br><br><hr>
 			[[${#httpServletRequest.getServletPath()}]]
 			<br><br>

@@ -41,11 +41,6 @@ public class UploadController {
 		return "upload";
 	}
 	
-//	@RequestMapping(method=RequestMethod.POST)
-//	public String submit(Contact contact) {
-//		contactRepo.save(contact);
-//		return "redirect:/";
-//	}
 	
 
 	@RequestMapping(method=RequestMethod.POST)

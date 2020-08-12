@@ -15,8 +15,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import com.hacksnet.kypota.model.ContestLog;
-import com.hacksnet.kypota.model.LogQso;
 import com.hacksnet.kypota.model.ResultsSummary;
 
 @Repository
@@ -24,13 +22,13 @@ public class ResultsRepository {
 	
 	DataSource dataSource;
 	private JdbcTemplate jdbc;
-	private NamedParameterJdbcTemplate namedJdbc;
+	//private NamedParameterJdbcTemplate namedJdbc;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.jdbc = new JdbcTemplate(dataSource);
-		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
+		//this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
 	}	
 	
 	

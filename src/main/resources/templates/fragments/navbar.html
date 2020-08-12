@@ -17,23 +17,45 @@
 						<li th:class="${#httpServletRequest.getServletPath().equals('/upload')} ? 'nav-item active' : 'nav-item'">
 							<a class="nav-link" th:href="@{/upload}">Upload Log</a>
 						</li>	
-					</ul>
-					
-					<ul class="navbar-nav mr-md-auto">
 					    <li class="nav-item dropdown">
 					    	<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Links</a>
 					    	<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
-					        	<a class="dropdown-item active" target="_blank" href="https://k4msu.com/">MSUARC Main Page K4MSU</a>
+					        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/">MSUARC Main Page K4MSU</a>
 					        	<div class="dropdown-divider"></div>
 					        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/kypota/">KY POTA Main Page</a>
 					        	<a class="dropdown-item" target="_blank" href="https://k4msu.files.wordpress.com/2019/12/kypota-rules-12-06-2019.pdf">KYPOTA Rules</a>
 					      	</div>
 					    </li>
+					    <div sec:authorize="hasRole('ROLE_ADMIN')">
+					    	<li th:class="${#httpServletRequest.getServletPath().equals('/admin')} ? 'nav-item active' : 'nav-item'">
+								<a class="nav-link" th:href="@{/admin}">Admin</a>
+							</li>
+					    </div>
+					    
+					    
 				  	</ul>
-					<form class="form-inline mt-2 mt-md-0">
-						<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-					</form>
+				  	<div sec:authorize="isAuthenticated()">
+				  		
+				  		<ul class="navbar-nav navbar-right">
+					  		<li class="nav-item dropdown">
+						    	<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span sec:authentication="name"></span></a>
+						    	<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+						        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/">Profile</a>
+						      	</div>
+						    </li>
+						    <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/logout}">Log out</a>
+					    </ul>
+					  	
+					</div>
+					<div sec:authorize="isAnonymous()">
+					  	<a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/sign_up}">Sign Up</a>
+					  	<a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/login}">Log in</a>
+					</div>
+				  	
+<!-- 					<form class="form-inline mt-2 mt-md-0"> -->
+<!-- 						<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
+<!-- 					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+<!-- 					</form> -->
 				</div>
 			</nav>
 		</header>

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import com.hacksnet.kypota.model.ContestLog;
 import com.hacksnet.kypota.model.LogQso;
 import com.hacksnet.kypota.model.Park;
-import com.hacksnet.kypota.model.ResultsSummary;
 
 @Repository
 public class ContestLogRepository {
