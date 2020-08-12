@@ -25,10 +25,7 @@ public class ResultsController {
 	public String results(Map<String,Object> model) {
 		List<ResultsSummary> results = resultsRepo. getResults();
 		model.put("results",  results);
-		
-		
-		
-		
+
 		return "results";
 	}
 	

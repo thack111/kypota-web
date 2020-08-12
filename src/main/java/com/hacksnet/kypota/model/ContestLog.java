@@ -36,6 +36,8 @@ public class ContestLog {
 	private List<LogQso> qsos;
 	private String submittedName;
 	private String submittedEmail;
+	private String parkAbbr;
+	private String parkName;
 	
 	public int getLogId() {
 		return logId;
@@ -229,6 +231,19 @@ public class ContestLog {
 	public void setSubmittedEmail(String submittedEmail) {
 		this.submittedEmail = submittedEmail;
 	}
+	public String getParkAbbr() {
+		return parkAbbr;
+	}
+	public void setParkAbbr(String parkAbbr) {
+		this.parkAbbr = parkAbbr;
+	}
+	public String getParkName() {
+		return parkName;
+	}
+	public void setParkName(String parkName) {
+		this.parkName = parkName;
+	}
+
 	
 
 }

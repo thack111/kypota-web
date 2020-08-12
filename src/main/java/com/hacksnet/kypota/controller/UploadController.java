@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hacksnet.kypota.dao.ContestLogRepository;
 import com.hacksnet.kypota.model.ContestLog;
 import com.hacksnet.kypota.model.LogQso;
+import com.hacksnet.kypota.model.Park;
 
 @Controller
 @RequestMapping("/upload")
@@ -34,8 +35,9 @@ public class UploadController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String home(Map<String,Object> model) {
-//		List<Contact> contacts = contactRepo.findAll();
-//		model.put("contacts",  contacts);
+		List<Park> parks = contestRepo.getParkList();
+		model.put("parks",  parks);
+		
 		return "upload";
 	}
 	
@@ -48,13 +50,14 @@ public class UploadController {
 
 	@RequestMapping(method=RequestMethod.POST)
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
-			  @RequestParam("email") String submittedEmail,
+			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park,
 			RedirectAttributes redirectAttributes) throws IOException {
 
 		System.out.println("Found file " + file.getOriginalFilename() + "!");
 		ContestLog logFile = new ContestLog();
 		logFile.setSubmittedName(submittedName);
 		logFile.setSubmittedEmail(submittedEmail);
+		logFile.setParkAbbr(park);
 		List<LogQso> qsos = new ArrayList<>();
 		StringBuffer rawLog = new StringBuffer();
 		int qsoCount = 0;
@@ -153,17 +156,6 @@ public class UploadController {
 	    			Matcher q = Pattern.compile("QSO:\\s+(\\S*)\\s+(\\S*)\\s+(\\S*)\\s+([0-9]*)\\s+(\\S*)\\s+(\\S*)\\s+(\\S*)\\s+(\\S*)\\s+(\\S*)\\s+(\\S*)\\s+([0-9]?)").matcher(line);	
 		    		if ( q.find()) { 
 		    			LogQso qso = new LogQso();
-//		    			System.out.println("Freq: "+ q.group(1));
-//		    			System.out.println("Mode: "+ q.group(2));
-//		    			System.out.println("Date: "+ q.group(3));
-//		    			System.out.println("time: "+ q.group(4));
-//		    			System.out.println("call: "+ q.group(5));
-//		    			System.out.println("rst: "+ q.group(6));
-//		    			System.out.println("esch: "+ q.group(7));
-//		    			System.out.println("call: "+ q.group(8));
-//		    			System.out.println("rst: "+ q.group(9));
-//		    			System.out.println("esch: "+ q.group(10));
-//		    			System.out.println("transmitter: "+ q.group(11));
 		    			qso.setFreq(q.group(1));
 		    			qso.setQsoMode(q.group(2));
 		    			qso.setQsoDate(q.group(3) + " " + q.group(4));
@@ -194,7 +186,7 @@ public class UploadController {
 	    
 		
 		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!  We found " + qsoCount + "QSOs!");
+				"You successfully uploaded " + file.getOriginalFilename() + "!  We found " + qsoCount + " QSOs!");
 
 		return "redirect:/";
 	}	

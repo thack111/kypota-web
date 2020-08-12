@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
+import com.hacksnet.kypota.model.ContestLog;
+import com.hacksnet.kypota.model.LogQso;
 import com.hacksnet.kypota.model.ResultsSummary;
 
 @Repository
@@ -63,6 +65,7 @@ public class ResultsRepository {
 			}
 		});
 	}
+	
 	
 	public int performAssesment() {
 		SimpleJdbcCall jdbcCall = new 

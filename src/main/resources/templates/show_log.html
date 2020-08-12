@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+	<head></head>
+	<body>
+		<div layout:fragment="content">
+			<h2 >KY POTA Contest Results</h2>
+	
+			<div th:if="${message}">
+				<h2 th:text="${message}"/>
+			</div>
+	
+			<div class="card bg-light text-dark">
+				<div class="card-body" th:text="'Showing submitted Contest Log details for entry ' + ${log.logId} + ' '"></div>
+				<div style="margin-left:20px;margin-bottom:20px;"><a th:href="@{/show_raw(logId=${log.logId})}" target="_blank">Show Raw Log</a></div>
+			</div>
+			
+			<div class="card bg-light text-dark" style="padding: 20px;">
+				<h2>Log Detail</h2>
+				
+				<div class="row">
+				  	<div class="col"><strong>Park Activated:</strong></div>
+				  	<div class="col"th:text="${log.parkAbbr}"></div>
+				  	<div class="col"><strong>Park Name:</strong></div>
+				  	<div class="col"th:text="${log.parkName}"></div>
+				</div>
+				<div class="row">
+				  	<div class="col"><strong>Name:</strong></div>
+				  	<div class="col"th:text="${log.submittedName}"></div>
+				  	<div class="col"><strong>Email:</strong></div>
+				  	<div class="col"th:text="${log.submittedEmail}"></div>
+				</div>
+				<div class="row">
+				  	<div class="col"><strong>Log Type:</strong></div>
+				  	<div class="col"th:text="${log.logType}"></div>
+				  	<div class="col"><strong>Log Format:</strong></div>
+				  	<div class="col"th:text="${log.format}"></div>
+				</div>
+				<div class="row">
+				  	<div class="col"><strong>Entered:</strong></div>
+				  	<div class="col"th:text="${log.enteredOn}"></div>
+				  	<div class="col"><strong>Operators:</strong></div>
+				  	<div class="col"th:text="${log.operators}"></div>
+				</div>
+				QSOs:<br>
+				<table class="table table-striped table-bordered">
+				    <thead>
+				    	<tr>
+				    		<th colspan="4"></th>
+				    		<th colspan="3">Sent</th>
+				    		<th colspan="3">Receive</th>
+				    		<th colspan="3"></th>
+				    	</tr>	
+				     	<tr>
+					        <th>Mode</th>
+					        <th>Date</th>
+					        <th>Band</th>
+					        <th>Freq</th>
+					        <th>Call</th>
+					        <th>Rst</th>
+					        <th>Exch</th>
+					        <th>Call</th>
+					        <th>Rst</th>
+					        <th>Exch</th>
+					        <th>Dup</th>
+					        <th>P2P</th>
+					        <th>Bonus</th>
+				      	</tr>
+				    </thead>
+				    <tbody>
+				      	<tr th:each="qso : ${log.qsos}">
+					        <td th:text="${qso.qsoMode}"></td>
+					        <td th:text="${qso.qsoDate}"></td>
+					        <td th:text="${qso.band}"></td>
+					        <td th:text="${qso.freq}"></td>
+					        <td th:text="${qso.sntCall}"></td>
+					        <td th:text="${qso.sntRst}"></td>
+					        <td th:text="${qso.sntExch}"></td>
+					        <td th:text="${qso.rcvCall}"></td>
+					        <td th:text="${qso.rcvRst}"></td>
+					        <td th:text="${qso.rcvExch}"></td>
+					        <td th:text="${qso.dup}"></td>
+					        <td th:text="${qso.park2park}"></td>
+					        <td th:text="${qso.bonus}"></td>
+				      	</tr>
+		        	</tbody>
+		        </table>
+			</div>
+        </div>
+	</body>
+</html>

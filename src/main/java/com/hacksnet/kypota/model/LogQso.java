@@ -14,6 +14,10 @@ public class LogQso {
 	private String rcvRst;
 	private String rcvExch;
 	private String transmitterId;
+	private String dup;
+	private String park2park;
+	private String bonus;
+	private String band;
 	
 	
 	public String getFreq() {
@@ -87,6 +91,30 @@ public class LogQso {
 	}
 	public void setTransmitterId(String transmitterId) {
 		this.transmitterId = transmitterId;
+	}
+	public String getDup() {
+		return dup;
+	}
+	public void setDup(String dup) {
+		this.dup = dup;
+	}
+	public String getPark2park() {
+		return park2park;
+	}
+	public void setPark2park(String park2park) {
+		this.park2park = park2park;
+	}
+	public String getBonus() {
+		return bonus;
+	}
+	public void setBonus(String bonus) {
+		this.bonus = bonus;
+	}
+	public String getBand() {
+		return band;
+	}
+	public void setBand(String band) {
+		this.band = band;
 	}
 	
 	
