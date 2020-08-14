@@ -6,7 +6,7 @@
 		<header>
 			<nav th:fragment="navbar" class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 				<a class="navbar-brand" href="/">KYPOTA</a>
-				<div class="collapse navbar-collapse" id="navbarCollapse">
+<!-- 				<div class="collapse navbar-collapse" id="navbarCollapse"> -->
 					<ul class="navbar-nav mr-auto">
 						<li th:class="${#httpServletRequest.getServletPath().equals('/')} ? 'nav-item active' : 'nav-item'">
 							<a class="nav-link" th:href="@{/}">Home</a>
@@ -23,7 +23,7 @@
 					        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/">MSUARC Main Page K4MSU</a>
 					        	<div class="dropdown-divider"></div>
 					        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/kypota/">KY POTA Main Page</a>
-					        	<a class="dropdown-item" target="_blank" href="https://k4msu.files.wordpress.com/2019/12/kypota-rules-12-06-2019.pdf">KYPOTA Rules</a>
+					        	<a class="dropdown-item" target="_blank" href="https://k4msu.files.wordpress.com/2019/12/kypota-rules-12-06-2019.pdf">KY POTA Rules</a>
 					      	</div>
 					    </li>
 					    <div sec:authorize="hasRole('ROLE_ADMIN')">
@@ -40,7 +40,7 @@
 					  		<li class="nav-item dropdown">
 						    	<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span sec:authentication="name"></span></a>
 						    	<div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
-						        	<a class="dropdown-item" target="_blank" href="https://k4msu.com/">Profile</a>
+						        	<a class="dropdown-item" th:href="@{/profile}">Profile</a>
 						      	</div>
 						    </li>
 						    <a class="btn btn-outline-success my-2 my-sm-0" th:href="@{/logout}">Log out</a>
@@ -56,7 +56,7 @@
 <!-- 						<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> -->
 <!-- 					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
 <!-- 					</form> -->
-				</div>
+<!-- 				</div> -->
 			</nav>
 		</header>
 	</body>

@@ -13,6 +13,16 @@
 			<div class="card bg-light text-dark">
 				<div class="card-body">
 					Here are the 2020 results.  These are built based on the logs submitted.  Please check the contest rules for more information on how the scores are counted.<br><br>
+					
+					<div sec:authorize="hasRole('ROLE_ADMIN')">
+						<form class="form-inline mt-2 mt-md-0" method='POST'>
+							<input type='hidden' name='post_action' value='analyse'>
+	 					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Re-Calculate</button> 
+	 					</form>
+						
+						
+						</br>
+					</div>
 				</div>
 			</div>
 			<table class="table table-striped table-bordered">

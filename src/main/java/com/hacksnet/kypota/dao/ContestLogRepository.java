@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import com.hacksnet.kypota.model.ContestLog;
@@ -23,11 +24,13 @@ public class ContestLogRepository {
 	
 	private JdbcTemplate jdbc;
 	private NamedParameterJdbcTemplate namedJdbc;
+	private SimpleJdbcCall jdbcCall;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbc = new JdbcTemplate(dataSource);
 		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbcCall = new SimpleJdbcCall(dataSource);
 	}	
 	
 	
@@ -97,6 +100,11 @@ public class ContestLogRepository {
 																		.addValue("transmitter_id", qso.getTransmitterId());
 			int qsoUpdated = namedJdbc.update(qsoSql, namedParamQso);
 		}
+		
+		jdbcCall.withProcedureName("ANALYZE_RESULTS");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
+		jdbcCall.execute(in);
+		
 		return logAdded;
 	}
 	
