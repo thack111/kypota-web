@@ -5,8 +5,98 @@
 	<body>
 		<div layout:fragment="content">
 			<h2 >KYPOTA Admin</h2>
+	
+			<div th:if="${message}">
+				<h2 th:text="${message}"/>
+			</div>
 			
-			Coming later..<br><br>
+			<div class="card bg-light text-dark">
+				<div class="card-body">
+					<h3>User Administration:</h3>
+					Below you can remove a user id, or allow Admin access.  Any Admin can update other users, and upload log files.<br><br>
+				</div>
+			</div>
+			<script type="text/javascript">
+				function editUser(user, email, adminFlag) {
+					document.getElementById("username").innerHTML=user;
+					document.getElementById("user").value=user;
+					document.getElementById("userdel").value=user;
+					document.getElementById("email").value=email;
+					document.getElementById("admin").value=adminFlag;
+					document.getElementById("user_edit").style.display='';
+					
+				}
+				function cancelEditUser() {
+					document.getElementById("user_edit").style.display='none';
+					
+				}
+			</script>
+			<div class="card bg-light text-dark" id="user_edit" style="display: none;">
+				<div class="card-body">
+					<h3>Edit User:<span id='username'></span></h3>
+					
+					<form method="post" class="form-horizontal">
+						<input type='hidden' id="user" name="user">
+						<input type='hidden' name="delete" value="No">
+			        	<div class="form-group">
+					    	<label class="control-label col-sm-2" for="email">Email:</label>
+					    	<div class="col-sm-10">
+					        	<input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+					    	</div>
+					    </div>
+						    
+					    <div class="form-group">
+							<label class="control-label col-sm-2" for="admin">Admin:</label>
+						  	<select class="form-control-sm" id="admin" name="admin">
+	    						<option value="Y">Yes</option>
+	    						<option value="N">No</option>
+						  	</select>
+						</div> 
+					    
+			        	<div class="form-group">        
+					    	<div class="col-sm-offset-2 col-sm-10">
+					        	<button type="submit" class="btn btn-success">Update User</button>
+					      	</div>
+					    </div>
+			        </form>
+					<br>
+					<div class="row" style="margin:15px;">
+						<div class="col-*-*"><a class="btn btn-primary" onClick="cancelEditUser();">Cancel Edit</a></div>
+						<div class="col-*-*">&nbsp;</div>
+					  	<div class="col-*-*">
+					  		<form method="post" class="form-horizontal" onSubmit="return confirm('Are you sure you want to delete this user?');" >
+								<input type='hidden' id="userdel" name="user">
+								<input type='hidden' name="delete" value="deleteYes">
+								<input type='hidden' name="email" value="">
+								<input type='hidden' name="admin" value="">
+								<button type='submit' class="btn btn-danger" >Delete User</button>
+							</form>
+						</div>
+					</div>
+					
+					<br>
+				</div>
+			</div>
+			<table class="table table-striped table-bordered">
+			    <thead>
+			     	<tr>
+			     		<th>User</th>
+				        <th>Email</th>
+				        <th>Enabled</th>
+				        <th>Admin</th>
+			      	</tr>
+			    </thead>
+			    <tbody>
+			      	<tr th:each="user : ${users}" th:data1="${user.user}" th:data2="${user.email}" th:data3="${user.adminFlag}" onclick="editUser(this.getAttribute('data1'), this.getAttribute('data2'), this.getAttribute('data3'));">
+				        <td th:text="${user.user}"></td>
+				        <td th:text="${user.email}"></td>
+				        <td th:text="${user.enabled}"></td>
+				        <td th:text="${user.adminFlag}"></td>
+			      	</tr>
+	        	</tbody>
+	        </table>
+	        
+			<br><br>
 		</div>
 	</body>
 </html>

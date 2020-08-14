@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hacksnet.kypota.dao.UserRepository;
-import com.hacksnet.kypota.model.NewUser;
+import com.hacksnet.kypota.model.User;
 
 @Controller
 @RequestMapping("/sign_up")
@@ -34,7 +34,7 @@ public class SignUpController {
 			             @RequestParam("email") String email,
 			             @RequestParam("password") String password,
 			             RedirectAttributes redirectAttributes) {
-		NewUser newUser = new NewUser();
+		User newUser = new User();
 		newUser.setUser(user);
 		newUser.setEmail(email);
 		newUser.setPassword(password);
