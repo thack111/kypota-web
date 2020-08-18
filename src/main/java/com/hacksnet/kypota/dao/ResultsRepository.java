@@ -37,7 +37,7 @@ public class ResultsRepository {
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, " + 
 		 			 "        q.num_qso_points, q.num_p2p,  q.num_bonus, " + 
-	 				 "        (nvl(num_qso_points, 0) + case when nvl(num_bonus, 0) > 3 then 3 else nvl(num_bonus, 0) end) * case when num_p2p > 1 then num_p2p else 1 end as total_score " + 
+	 				 "        (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when num_p2p > 1 then num_p2p else 1 end as total_score " + 
 					 "from    kypota.logs l " + 
 					 "    left outer join (select log_id, " + 
 					 "                            count(*) as num_qso_points," + 
@@ -46,7 +46,7 @@ public class ResultsRepository {
 					 "                    from    kypota.qsos " + 
 					 "                    where   dup = 0 " +  
 					 "                    group by log_id) q on l.log_id = q.log_id " + 
-					 "order by (nvl(num_qso_points, 0) + case when nvl(num_bonus, 0) > 3 then 3 else nvl(num_bonus, 0) end) * case when num_p2p > 1 then num_p2p else 1 end desc";
+					 "order by (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when num_p2p > 1 then num_p2p else 1 end desc";
 		return jdbc.query(sql, 
 				new RowMapper<ResultsSummary>() {
 			public ResultsSummary mapRow(ResultSet rs, int rowNum) throws SQLException {
