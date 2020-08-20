@@ -54,7 +54,7 @@ public class UserRepository {
 		namedJdbc.update(sql, namedParam);
 		
 		String authSql = "insert into authorities " + 
-						  "values(username, 'ROLE_USER')";
+						  "values(:username, 'ROLE_USER')";
 		SqlParameterSource authNamedParam = new MapSqlParameterSource().addValue("username", user.getUser());
 		namedJdbc.update(authSql, authNamedParam);
 		
