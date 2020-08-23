@@ -108,8 +108,8 @@ public class LogParserRepository {
 		    			qso.setSntRst(q.group(6));
 		    			qso.setRcvCall(q.group(7));
 		    			qso.setRcvRst(q.group(8));
-		    			qso.setSntExch(q.group(9).substring(0, 20));
-		    			qso.setRcvExch(q.group(9).substring(21));
+		    			qso.setSntExch(q.group(9).substring(0, 11));
+		    			qso.setRcvExch(q.group(9).substring(11));
 		    			System.out.println("found : " + q.group(9));
 		    			qsos.add(qso);
 		    		}
