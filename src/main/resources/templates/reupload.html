@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+	<head></head>
+	<body>
+		<div layout:fragment="content">
+			<h2 >KY POTA Contest Home</h2>
+	
+			<a th:href="@{/}">Cancel and Return Home</a><br><br>
+			<div class="card bg-light text-dark">
+				<div class="card-body">
+			        <form method="post"  enctype="multipart/form-data" class="form-horizontal">
+			        	<input type="hidden" name="log_id" th:value="${log.logId}">
+			        	<div class="form-group">
+					    	<label class="control-label col-sm-2" for="email">Email:</label>
+					    	<div class="col-sm-10">
+					        	<input type="email" class="form-control" id="email" name="email" placeholder="Enter email" th:value="${log.submittedEmail}">
+					    	</div>
+					    </div>
+			        	<div class="form-group">
+					    	<label class="control-label col-sm-2" for="name">Name:</label>
+					    	<div class="col-sm-10">
+					        	<input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" th:value="${log.submittedName}">
+					    	</div>
+					    </div>
+					    
+					    <div class="form-group">
+							<label class="control-label col-sm-2" for="park">Select Park:</label>
+						  	<div class="col-sm-10">
+							  	<select class="form-control" id="park" name="park" style="width:auto;">
+		    						<option th:each="park : ${parks}" th:value="${park.abbr}" th:text="${park.abbr} + ' - ' + ${park.parkName}"
+		    						        th:selected="${log.parkAbbr==park.abbr}"></option>
+							  	</select>
+							</div>
+						</div> 
+					    
+			        	<div class="form-group">
+					    	<label class="control-label col-sm-6" for="file">KY POTA Log file: <i>(Log File must be in Cabrillo format!)</i></label>
+					    	<div class="col-sm-10">
+					        	<input type="file" class="form-control-file" id="file" name="file" placeholder="Enter Name">
+					    	</div>
+					    </div>
+			        	<div class="form-group">        
+					    	<div class="col-sm-offset-2 col-sm-10">
+					        	<button type="submit" class="btn btn-success">Upload Log</button>
+					      	</div>
+					    </div>
+		
+			        </form>
+			    </div>
+        	</div>
+        </div>
+	</body>
+</html>

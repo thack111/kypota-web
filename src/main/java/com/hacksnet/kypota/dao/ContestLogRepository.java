@@ -98,7 +98,106 @@ public class ContestLogRepository {
 																		.addValue("rcv_exch", qso.getRcvExch())
 																		.addValue("freq", qso.getFreq())
 																		.addValue("transmitter_id", qso.getTransmitterId());
-			int qsoUpdated = namedJdbc.update(qsoSql, namedParamQso);
+			namedJdbc.update(qsoSql, namedParamQso);
+		}
+		
+		jdbcCall.withProcedureName("ANALYZE_RESULTS");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
+		jdbcCall.execute(in);
+		
+		return logAdded;
+	}
+	
+	public int updateLog (ContestLog log) {
+		
+		String sql = "update kypota.logs " +
+				     "set 	 entered_on = sysdate, " +
+				     "       log_type = :log_type, " +
+				     "       format = :format,  " +
+				     "       location = :location, " +
+				     "       callsign = :callsign, " +
+				     "       club = :club, " +
+				     "       contest = :contest, " +
+				     "       cat_operator = :cat_operator, " +
+				     "       cat_assisted = :cat_assisted, " +
+				     "       cat_band = :cat_band, " +
+				     "       cat_mode = :cat_mode, " +
+				     "       cat_power = :cat_power, " +
+				     "       cat_station = :cat_station, " +
+				     "       cat_transmitter = :cat_transmitter, " +
+				     "       claimed_score = :claimed_score, " +
+				     "       operators = :operators, " +
+				     "       name = :name, " +
+				     "       address = :address, " +
+				     "       city = :city, " +
+				     "       state = :state, " +
+				     "       zip = :zip, " +
+				     "       country = country, " +
+				     "       email = :email, " +
+				     "       grid_loc = :grid_loc, " +
+				     "       soap_box = :soap_box, " +
+				     "       time_start = :time_start, " +
+				     "       time_end = :time_end, " +
+				     "       raw_log = :raw_log, " +
+				     "       submitted_name = :submitted_name, " +
+				     "       submitted_email = :submitted_email, " +
+				     "       park_abbr = :park_abbr "+
+				     "where  log_id = :log_id ";
+		SqlParameterSource namedParam = new MapSqlParameterSource().addValue("log_id", log.getLogId())
+																	.addValue("log_type", log.getLogType())
+																	.addValue("format", log.getFormat())
+																	.addValue("location", log.getLocation())
+																	.addValue("callsign", log.getCallsign())
+																	.addValue("club", log.getClub())
+																	.addValue("contest", log.getContest())
+																	.addValue("cat_operator", log.getCatOperator())
+																	.addValue("cat_assisted", log.getCatAssisted())
+																	.addValue("cat_band", log.getCatBand())
+																	.addValue("cat_mode", log.getCatMode())
+																	.addValue("cat_power", log.getCatPower())
+																	.addValue("cat_station", log.getCatStation())
+																	.addValue("cat_transmitter", log.getCatTransmitter())
+																	.addValue("claimed_score", log.getClaimedScore())
+																	.addValue("operators", log.getOperators())
+																	.addValue("name", log.getName())
+																	.addValue("address", log.getAddress())
+																	.addValue("city", log.getCity())
+																	.addValue("state", log.getState())
+																	.addValue("zip", log.getZip())
+																	.addValue("country", log.getCountry())
+																	.addValue("email", log.getEmail())
+																	.addValue("grid_loc", log.getGridLoc())
+																	.addValue("soap_box", log.getSoapBox())
+																	.addValue("time_start", log.getTimeStart())
+																	.addValue("time_end", log.getTimeEnd())
+																	.addValue("raw_log", log.getRawLog())
+																	.addValue("submitted_name", log.getSubmittedName())
+																	.addValue("submitted_email", log.getSubmittedEmail())
+																	.addValue("park_abbr", log.getParkAbbr());
+
+		int logAdded =namedJdbc.update(sql, namedParam);
+		
+		String delQsoSql = "delete from kypota.qsos where log_id = :log_id";
+		SqlParameterSource delNamedParamQso = new MapSqlParameterSource().addValue("log_id", log.getLogId());
+		namedJdbc.update(delQsoSql, delNamedParamQso);
+
+		for (LogQso qso : log.getQsos()) {
+			
+			
+			String qsoSql = "insert into kypota.qsos (log_id, qso_id, qso_mode, qso_date, snt_call, snt_rst, snt_exch, rcv_call, rcv_rst, rcv_exch, freq, transmitter_id)" + 
+					        "values  (:log_id, kypota.qso_seq.nextval, :qso_mode, to_date(:qso_date, 'YYYY-MM-DD HH24MI'), :snt_call, :snt_rst, :snt_exch, :rcv_call, :rcv_rst, :rcv_exch, :freq, :transmitter_id)";
+			SqlParameterSource namedParamQso = new MapSqlParameterSource().addValue("log_id", log.getLogId())
+																		.addValue("qso_mode", qso.getQsoMode())
+																		.addValue("qso_date", qso.getQsoDate())
+																		.addValue("snt_call", qso.getSntCall())
+																		.addValue("snt_rst", qso.getSntRst())
+																		.addValue("snt_exch", qso.getSntExch())
+																		.addValue("rcv_call", qso.getRcvCall())
+																		.addValue("rcv_rst", qso.getRcvRst())
+																		.addValue("rcv_exch", qso.getRcvExch())
+																		.addValue("freq", qso.getFreq())
+																		.addValue("transmitter_id", qso.getTransmitterId());
+			namedJdbc.update(qsoSql, namedParamQso);
 		}
 		
 		jdbcCall.withProcedureName("ANALYZE_RESULTS");
@@ -109,6 +208,20 @@ public class ContestLogRepository {
 	}
 	
 
+	public int deleteLog (int logId) {
+		
+		
+		String delQsoSql = "delete from kypota.qsos where log_id = :log_id";
+		SqlParameterSource delNamedParamQso = new MapSqlParameterSource().addValue("log_id", logId);
+		namedJdbc.update(delQsoSql, delNamedParamQso);
+		
+		String delLogSql = "delete from kypota.logs where log_id = :log_id";
+		SqlParameterSource delNamedParamLog = new MapSqlParameterSource().addValue("log_id", logId);
+		namedJdbc.update(delLogSql, delNamedParamLog);
+		
+		return 1;
+	}
+	
 	public ContestLog getLog (int logId) {
 
 		String sql = "select	log_id, entered_on, log_type, format, location, callsign, club, contest, " + 

@@ -262,7 +262,7 @@ REM INSERTING into KYPOTA.USERS
 SET DEFINE OFF;
 Insert into KYPOTA.USERS (USERNAME,PASSWORD,ENABLED,EMAIL) values ('user','$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a','Y','user@email.com');
 
-
+insert into kypota.authorities  values('user', 'ROLE_USER');
 
 REM INSERTING into KYPOTA.KYPARKS
 SET DEFINE OFF;

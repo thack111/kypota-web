@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hacksnet.kypota.dao.ContestLogRepository;
 import com.hacksnet.kypota.model.ContestLog;
@@ -30,4 +32,18 @@ public class LogController {
 		return "show_log";
 	}
 
+	@RequestMapping(method=RequestMethod.POST)
+	public String process(@RequestParam("post_action") String postAction,
+						  @RequestParam("log_id") String logId,
+						  RedirectAttributes redirectAttributes) {
+		
+		if (postAction.contentEquals("deleteLog"))	{
+			contestRepo.deleteLog(Integer.parseInt(logId));
+			
+			redirectAttributes.addFlashAttribute("message",
+					"Deleted Log File!");
+		}
+		
+		return "redirect:/results";
+	}
 }

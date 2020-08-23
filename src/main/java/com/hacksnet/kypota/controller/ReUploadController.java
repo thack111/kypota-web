@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +23,8 @@ import com.hacksnet.kypota.model.ContestLog;
 import com.hacksnet.kypota.model.Park;
 
 @Controller
-@RequestMapping("/upload")
-public class UploadController {
+@RequestMapping("/reupload")
+public class ReUploadController {
 	private ContestLogRepository contestRepo;
 	
 	@Autowired
@@ -31,22 +33,26 @@ public class UploadController {
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String home(Map<String,Object> model) {
+	public String reShow(@PathParam("logId") Integer logId, Map<String,Object> model) {
 		List<Park> parks = contestRepo.getParkList();
 		model.put("parks",  parks);
+		ContestLog log = contestRepo.getLog(logId);
+		model.put("log",  log);
 		
-		return "upload";
+		return "reupload";
 	}
 	
 	
 
 	@RequestMapping(method=RequestMethod.POST)
-	public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
+	public String handleFileReUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
+			  @RequestParam("log_id") String logId,
 			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park,
-			RedirectAttributes redirectAttributes) throws IOException {
+			  RedirectAttributes redirectAttributes) throws IOException {
 
 		System.out.println("Found file " + file.getOriginalFilename() + "!");
 		ContestLog logFile = new ContestLog();
+		logFile.setLogId(Integer.parseInt(logId));
 		logFile.setSubmittedName(submittedName);
 		logFile.setSubmittedEmail(submittedEmail);
 		logFile.setParkAbbr(park);
@@ -56,12 +62,12 @@ public class UploadController {
 	      new InputStreamReader(resource)) ) {
 	       
 	    	logFile = LogParserRepository.parseLog(logFile, reader);
-	    	contestRepo.addLog(logFile);
+	    	contestRepo.updateLog(logFile);
 	    }
 	    
 		
 		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!  We found " + logFile.getQsos().size() + " QSOs!");
+				"You successfully re-uploaded " + file.getOriginalFilename() + "!  We found " + logFile.getQsos().size() + " QSOs!");
 
 		return "redirect:/";
 	}	

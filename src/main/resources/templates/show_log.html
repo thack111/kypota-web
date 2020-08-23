@@ -20,15 +20,15 @@
 				
 				<div class="row">
 				  	<div class="col"><strong>Park Activated:</strong></div>
-				  	<div class="col"th:text="${log.parkAbbr}"></div>
+				  	<div class="col" th:text="${log.parkAbbr}"></div>
 				  	<div class="col"><strong>Park Name:</strong></div>
-				  	<div class="col"th:text="${log.parkName}"></div>
+				  	<div class="col" th:text="${log.parkName}"></div>
 				</div>
 				<div class="row">
 				  	<div class="col"><strong>Name:</strong></div>
-				  	<div class="col"th:text="${log.submittedName}"></div>
+				  	<div class="col" th:text="${log.submittedName}"></div>
 				  	<div class="col"><strong>Email:</strong></div>
-				  	<div class="col"th:text="${log.submittedEmail}"></div>
+				  	<div class="col" th:text="${log.submittedEmail}"></div>
 				</div>
 				<div class="row">
 				  	<div class="col"><strong>Log Type:</strong></div>
@@ -86,6 +86,21 @@
 		        	</tbody>
 		        </table>
 			</div>
+            <div class="card bg-light text-dark" sec:authorize="hasRole('ROLE_ADMIN')"> 
+	        	<div style="margin:20px;padding:20px;">
+		        	<div class="row">
+					  	<div class="col-*-*"><a class="btn btn-outline-success" th:href="@{/reupload(logId=${log.logId})}">Re-UpLoad This log</a></div>
+					  	<div class="col-*-*">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+					  	<div class="col-*-*">
+					  		<form method="post" class="form-horizontal" onSubmit="return confirm('Are you sure you want to delete this log?');" >
+								<input type="hidden" name="log_id" th:value="${log.logId}">
+								<input type='hidden' name="post_action" value="deleteLog">
+								<button type='submit' class="btn btn-outline-danger" >Delete Contest Log</button>
+							</form>
+					  	</div>
+					</div>
+				</div>
+            </div>
         </div>
 	</body>
 </html>

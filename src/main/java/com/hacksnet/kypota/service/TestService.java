@@ -17,7 +17,7 @@ import com.hacksnet.kypota.dao.TestRepository;
 @Component
 @Path("/test")
 public class TestService {
-	private static Logger log = LoggerFactory.getLogger(TestService.class);
+	//private static Logger log = LoggerFactory.getLogger(TestService.class);
 
 	
 	@Autowired
