@@ -6,6 +6,7 @@ public class ResultsSummary {
 	private String submittedEmail;
 	private String submittedName;
 	private int numQsoPoints;
+	private int numParks;
 	private int numPark2Park;
 	private int numBonus;
 	private int totalScore;
@@ -33,6 +34,12 @@ public class ResultsSummary {
 	}
 	public void setNumQsoPoints(int numQsoPoints) {
 		this.numQsoPoints = numQsoPoints;
+	}
+	public int getNumParks() {
+		return numParks;
+	}
+	public void setNumParks(int numParks) {
+		this.numParks = numParks;
 	}
 	public int getNumPark2Park() {
 		return numPark2Park;

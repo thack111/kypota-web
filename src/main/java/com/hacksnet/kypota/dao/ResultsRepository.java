@@ -36,11 +36,12 @@ public class ResultsRepository {
 		
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, " + 
-		 			 "        q.num_qso_points, q.num_p2p,  q.num_bonus, " + 
-	 				 "        (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when num_p2p > 1 then num_p2p else 1 end as total_score " + 
+		 			 "        q.num_qso_points, q.num_p2p,  q.num_bonus, q.num_parks, " + 
+	 				 "        (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end as total_score " + 
 					 "from    kypota.logs l " + 
 					 "    left outer join (select log_id, " + 
 					 "                            count(*) as num_qso_points," + 
+					 "                            count( distinct park_abbr) as num_parks, " +
 					 "                            sum(p2p) as num_p2p, " + 
 					 "                            sum(bonus_stn) as num_bonus " + 
 					 "                    from    kypota.qsos " + 
@@ -57,7 +58,8 @@ public class ResultsRepository {
 				resSum.setNumQsoPoints(rs.getInt(4));
 				resSum.setNumPark2Park(rs.getInt(5));
 				resSum.setNumBonus(rs.getInt(6));
-				resSum.setTotalScore(rs.getInt(7));
+				resSum.setNumParks(rs.getInt(7));
+				resSum.setTotalScore(rs.getInt(8));
 				return resSum;
 			}
 		});

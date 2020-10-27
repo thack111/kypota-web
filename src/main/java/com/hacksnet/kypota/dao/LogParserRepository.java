@@ -94,7 +94,7 @@ public class LogParserRepository {
     		m = Pattern.compile("OFFTIME:: (.*)").matcher(line);	
     		if ( m.find()) { System.out.println("times: "+ m.group(1)); } // Found OFFTIME, may do this later
     		
-    		if (line.substring(0, 4).equals("QSO:"))	
+    		if (line.length() > 4 && line.substring(0, 4).equals("QSO:"))	
     		{
     			
     			if (logFile.getContest().equals("DX")) {
@@ -108,8 +108,10 @@ public class LogParserRepository {
 		    			qso.setSntRst(q.group(6));
 		    			qso.setRcvCall(q.group(7));
 		    			qso.setRcvRst(q.group(8));
-		    			qso.setSntExch(q.group(9).substring(0, 11));
-		    			qso.setRcvExch(q.group(9).substring(11));
+		    			if (q.group(9).length() > 10)
+		    				qso.setSntExch(q.group(9).substring(0, 11));
+		    			if (q.group(9).length() > 11)
+		    				qso.setRcvExch(q.group(9).substring(11));
 		    			System.out.println("found : " + q.group(9));
 		    			qsos.add(qso);
 		    		}

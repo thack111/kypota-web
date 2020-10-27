@@ -27,6 +27,7 @@
 							<label class="control-label col-sm-2" for="park">Select Park:</label>
 						  	<div class="col-sm-10">
 							  	<select class="form-control" id="park" name="park" style="width:auto;">
+							  		<option th:value="'Hunter'" th:text="Hunter"></option>
 		    						<option th:each="park : ${parks}" th:value="${park.abbr}" th:text="${park.abbr} + ' - ' + ${park.parkName}"></option>
 							  	</select>
 							</div>
