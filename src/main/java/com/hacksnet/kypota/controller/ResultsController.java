@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.hacksnet.kypota.dao.ContestLogRepository;
 import com.hacksnet.kypota.dao.ResultsRepository;
 import com.hacksnet.kypota.model.ResultsSummary;
 
@@ -18,21 +17,17 @@ import com.hacksnet.kypota.model.ResultsSummary;
 @RequestMapping("/results")
 public class ResultsController {
 	private ResultsRepository resultsRepo;
-	private ContestLogRepository contestRepo;
 
 	@Autowired
 	public ResultsController (ResultsRepository resultsRepo) {
 		this.resultsRepo = resultsRepo;
 	}
 	
-	@Autowired
-	public void UpdateController (ContestLogRepository repo) {
-		this.contestRepo = repo;
-	}
+
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String results(Map<String,Object> model) {
-		List<ResultsSummary> results = resultsRepo.getResults();
+		List<ResultsSummary> results = resultsRepo.getResults("All");
 		model.put("results",  results);
 
 		return "results";

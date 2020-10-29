@@ -14,6 +14,9 @@
 						<li th:class="${#httpServletRequest.getServletPath().equals('/results')} ? 'nav-item active' : 'nav-item'">
 							<a class="nav-link" th:href="@{/results}">Results</a>
 						</li>
+						<li th:class="${#httpServletRequest.getServletPath().equals('/top_results')} ? 'nav-item active' : 'nav-item'">
+							<a class="nav-link" th:href="@{/top_results}">Top Results Summary</a>
+						</li>
 						<li th:class="${#httpServletRequest.getServletPath().equals('/upload')} ? 'nav-item active' : 'nav-item'">
 							<a class="nav-link" th:href="@{/upload}">Upload Log</a>
 						</li>	

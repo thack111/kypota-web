@@ -5,6 +5,7 @@ public class ResultsSummary {
 	private int logId;
 	private String submittedEmail;
 	private String submittedName;
+	private String parkWorked;
 	private int numQsoPoints;
 	private int numParks;
 	private int numPark2Park;
@@ -28,6 +29,12 @@ public class ResultsSummary {
 	}
 	public void setSubmittedName(String submittedName) {
 		this.submittedName = submittedName;
+	}
+	public String getParkWorked() {
+		return parkWorked;
+	}
+	public void setParkWorked(String parkWorked) {
+		this.parkWorked = parkWorked;
 	}
 	public int getNumQsoPoints() {
 		return numQsoPoints;

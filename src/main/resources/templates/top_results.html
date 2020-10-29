@@ -4,7 +4,7 @@
 	<head></head>
 	<body>
 		<div layout:fragment="content">
-			<h2 >KY POTA Contest Results</h2>
+			<h2 >KY POTA Contest Top Results</h2>
 	
 			<div th:if="${message}">
 				<h2 th:text="${message}"/>
@@ -14,17 +14,10 @@
 				<div class="card-body">
 					Here are the 2020 results.  These are built based on the logs submitted.  Please check the contest rules for more information on how the scores are counted.<br><br>
 					
-					<div sec:authorize="hasRole('ROLE_ADMIN')">
-						<form class="form-inline mt-2 mt-md-0" method='POST'>
-							<input type='hidden' name='post_action' value='analyse'>
-	 					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Re-Calculate</button> 
-	 					</form>
-						
-						
-						</br>
-					</div>
+
 				</div>
 			</div>
+			<h3>Activations</h3>
 			<table class="table table-striped table-bordered">
 			    <thead>
 			     	<tr>
@@ -39,7 +32,7 @@
 			      	</tr>
 			    </thead>
 			    <tbody>
-			      	<tr th:each="result : ${results}">
+			      	<tr th:each="result : ${parks}">
 				        <td ><a th:href="@{/show_log(logId=${result.logId})}" th:text="${result.submittedEmail}"></a></td>
 				        <td th:text="${result.submittedName}"></td>
 				        <td th:text="${result.parkWorked}"></td>
@@ -51,7 +44,30 @@
 			      	</tr>
 	        	</tbody>
 	        </table>
-
+			
+			<h3>Hunters</h3>
+			<table class="table table-striped table-bordered">
+			    <thead>
+			     	<tr>
+				        <th>Email</th>
+				        <th>Name</th>
+				        <th>QSO Points</th>
+				        <th># Bonus Stations</th>
+				        <th># Unique Parks</th>
+				        <th>Total Score</th>
+			      	</tr>
+			    </thead>
+			    <tbody>
+			      	<tr th:each="result : ${hunters}">
+				        <td ><a th:href="@{/show_log(logId=${result.logId})}" th:text="${result.submittedEmail}"></a></td>
+				        <td th:text="${result.submittedName}"></td>
+				        <td th:text="${result.numQsoPoints}"></td>
+				        <td th:text="${result.numBonus}"></td>
+				        <td th:text="${result.numParks}"></td>
+				        <td th:text="${result.totalScore}"></td>
+			      	</tr>
+	        	</tbody>
+	        </table>
         </div>
 	</body>
 </html>
