@@ -36,10 +36,10 @@ public class ResultsRepository {
 		
 		String whereCri = "";
 		if (type.equals("Hunters")) {
-			whereCri = "where    l.park_abbr = 'Hunter' and substr(l.operators, 1, 5) != 'K4MSU' ";
+			whereCri = "where    l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
 		}
 		else if (type.equals("Parks")) {
-			whereCri = "where    l.park_abbr != 'Hunter' and substr(l.operators, 1, 5) != 'K4MSU' ";
+			whereCri = "where    l.park_abbr != 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
 		}
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, l.park_abbr, " + 
@@ -83,7 +83,7 @@ public class ResultsRepository {
 	
 	public int performAssesment() {
 		jdbcCall.withProcedureName("ANALYZE_RESULTS");
-		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2021");
 		jdbcCall.execute(in);
 
 		return 1;
