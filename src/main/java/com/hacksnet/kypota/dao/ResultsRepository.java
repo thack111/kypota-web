@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
+import com.hacksnet.kypota.model.ContestYear;
 import com.hacksnet.kypota.model.ResultsSummary;
 
 @Repository
@@ -31,15 +32,15 @@ public class ResultsRepository {
 	}	
 	
 	
-	public List<ResultsSummary> getResults (String type) {
+	public List<ResultsSummary> getResults (String type, String resultsYear) {
 		// just placeholder.. need actual implementation.
-		
-		String whereCri = "";
+
+		String whereCri = "where  trunc(entered_on, 'YYYY') = trunc(to_date('"+resultsYear+"', 'YYYY'), 'YYYY') ";
 		if (type.equals("Hunters")) {
-			whereCri = "where    l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
+			whereCri += "and l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
 		}
 		else if (type.equals("Parks")) {
-			whereCri = "where    l.park_abbr != 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
+			whereCri += "and l.park_abbr != 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
 		}
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, l.park_abbr, " + 
@@ -79,7 +80,22 @@ public class ResultsRepository {
 		});
 	}
 	
-	
+	public List<ContestYear> getContestYears () {
+		
+		String sql = String.join(" ", 
+				"select to_char(trunc(entered_on, 'YYYY'), 'YYYY') as year ", 
+				"from 	kypota.logs  where entered_on is not null ",
+				"group by trunc(entered_on, 'YYYY') ",
+				"order by trunc(entered_on, 'YYYY') ");
+		return jdbc.query(sql, 
+				new RowMapper<ContestYear>() {
+			public ContestYear mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ContestYear year = new ContestYear();
+				year.setYear(rs.getString("year"));
+				return year;
+			}
+		});
+	}
 	
 	public int performAssesment() {
 		jdbcCall.withProcedureName("ANALYZE_RESULTS");
