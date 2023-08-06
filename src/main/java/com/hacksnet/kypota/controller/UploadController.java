@@ -42,7 +42,8 @@ public class UploadController {
 
 	@RequestMapping(method=RequestMethod.POST)
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
-			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park,
+			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park, @RequestParam("type") String type,
+			  @RequestParam("operator") String operator,
 			RedirectAttributes redirectAttributes) throws IOException {
 
 		System.out.println("Found file " + file.getOriginalFilename() + "!");
@@ -50,6 +51,8 @@ public class UploadController {
 		logFile.setSubmittedName(submittedName);
 		logFile.setSubmittedEmail(submittedEmail);
 		logFile.setParkAbbr(park);
+		logFile.setLogType(type);
+		logFile.setOperators(operator);
 
 		InputStream resource = file.getInputStream();
 	    try ( BufferedReader reader = new BufferedReader(

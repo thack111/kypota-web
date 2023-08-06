@@ -37,10 +37,10 @@ public class ResultsRepository {
 
 		String whereCri = "where  trunc(entered_on, 'YYYY') = trunc(to_date('"+resultsYear+"', 'YYYY'), 'YYYY') ";
 		if (type.equals("Hunters")) {
-			whereCri += "and l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
+			whereCri += "and l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','K4E','W4GZ') ";
 		}
 		else if (type.equals("Parks")) {
-			whereCri += "and l.park_abbr != 'Hunter' and l.operators not in ('K4MSU','K4Y','W4GZ') ";
+			whereCri += "and l.park_abbr != 'Hunter' and l.operators not in ('K4MSU','K4Y','K4E','W4GZ') ";
 		}
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, l.park_abbr, " + 

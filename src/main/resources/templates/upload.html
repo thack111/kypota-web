@@ -24,6 +24,13 @@
 					    </div>
 					    
 					    <div class="form-group">
+					    	<label class="control-label col-sm-2" for="operator">Name:</label>
+					    	<div class="col-sm-10">
+					        	<input type="text" class="form-control" id="operator" name="operator" placeholder="Enter Sign used">
+					    	</div>
+					    </div>
+					    
+					    <div class="form-group">
 							<label class="control-label col-sm-2" for="park">Select Park:</label>
 						  	<div class="col-sm-10">
 							  	<select class="form-control" id="park" name="park" style="width:auto;">
@@ -33,6 +40,16 @@
 							</div>
 						</div> 
 					    
+					    <div class="form-group">
+							<label class="control-label col-sm-2" for="type">Select Log Format:</label>
+						  	<div class="col-sm-10">
+							  	<select class="form-control" id="type" name="type" style="width:auto;">
+							  		<option th:value="'Cabrillo'" th:text="Cabrillo"></option>
+							  		<option th:value="'ADIF'" th:text="ADIF"></option>
+							  	</select>
+							</div>
+						</div> 
+						
 			        	<div class="form-group">
 					    	<label class="control-label col-sm-6" for="file">KY POTA Log file: <i>(Log File must be in Cabrillo format!)</i></label>
 					    	<div class="col-sm-10">
