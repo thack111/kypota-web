@@ -117,6 +117,12 @@ public class LogQso {
 		this.band = band;
 	}
 	
-	
+	public boolean isValid() {
+		if (qsoDate.isEmpty() ||
+			!qsoDate.matches("([0-9]){4}-([0-9]){2}-([0-9]){2} ([0-9]){4}")) {
+			return false;
+		}
+		return true;
+	}
 	
 }

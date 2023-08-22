@@ -111,7 +111,13 @@ public class LogParserRepository {
 			    			if (q.group(9).length() > 11)
 			    				qso.setRcvExch(q.group(9).substring(11));
 			    			System.out.println("found : " + q.group(9));
-			    			qsos.add(qso);
+			    			if (qso.isValid()) {
+			    				qsos.add(qso);
+			    			}
+			    			else
+			    			{	
+			    				System.out.println("Error invalid qso found!");
+			    			}
 			    		}
 	    			}
 	    			else {
@@ -128,7 +134,13 @@ public class LogParserRepository {
 			    			qso.setRcvRst(q.group(9));
 			    			qso.setRcvExch(q.group(10));
 			    			qso.setTransmitterId( q.group(11));
-			    			qsos.add(qso);
+			    			if (qso.isValid()) {
+			    				qsos.add(qso);
+			    			}
+			    			else
+			    			{	
+			    				System.out.println("Error invalid qso found!");
+			    			}
 			    		}
 	    			}
 	    			
@@ -181,7 +193,13 @@ public class LogParserRepository {
 	    			qso.setSntExch(logFile.getParkAbbr());
 	    			qso.setQsoDate(qsoDate+" "+qsoTime);
 	    			
-	    			qsos.add(qso);
+	    			if (qso.isValid()) {
+	    				qsos.add(qso);
+	    			}
+	    			else
+	    			{	
+	    				System.out.println("Error invalid qso found!");
+	    			}
 
 	    		}
 	    		m = Pattern.compile("<EOH>").matcher(line);	

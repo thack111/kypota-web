@@ -47,7 +47,8 @@ public class ReUploadController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String handleFileReUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String submittedName,
 			  @RequestParam("log_id") String logId,
-			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park,
+			  @RequestParam("email") String submittedEmail, @RequestParam("park") String park, @RequestParam("type") String type,
+			  @RequestParam("operator") String operator,
 			  RedirectAttributes redirectAttributes) throws IOException {
 
 		System.out.println("Found file " + file.getOriginalFilename() + "!");
@@ -56,6 +57,8 @@ public class ReUploadController {
 		logFile.setSubmittedName(submittedName);
 		logFile.setSubmittedEmail(submittedEmail);
 		logFile.setParkAbbr(park);
+		logFile.setLogType(type);
+		logFile.setOperators(operator);
 
 		InputStream resource = file.getInputStream();
 	    try ( BufferedReader reader = new BufferedReader(
