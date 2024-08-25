@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.hacksnet</groupId>
 	<artifactId>kypota</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>kypota</name>
 	<description>Web Application to process KY POTA logs</description>
 	<packaging>jar</packaging>

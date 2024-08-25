@@ -7,17 +7,22 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hacksnet.kypota.model.ContestLog;
 import com.hacksnet.kypota.model.LogQso;
 
 public class LogParserRepository {
-
+	private static Logger log = LoggerFactory.getLogger(LogParserRepository.class);
 	public static ContestLog parseLog(ContestLog logFile, BufferedReader reader) throws IOException{
 		
 
 		List<LogQso> qsos = new ArrayList<>();
 		StringBuffer rawLog = new StringBuffer();
 		Boolean isQso = false;
+		LogQso mqso = new LogQso();  // multi-line qso
+		Boolean qsoComplete = false;
 		String line = reader.readLine();
     	while (line != null) {
     		if (logFile.getLogType().equals("Cabrillo")) {
@@ -149,61 +154,93 @@ public class LogParserRepository {
     		else if(logFile.getLogType().equals("ADIF")) {
     			Matcher m = Pattern.compile("Bogus").matcher(line);	
     			
-    			m = Pattern.compile("Contest Name: ([a-zA-Z0-9]*)").matcher(line);	
-	    		if ( m.find()) { logFile.setContest(m.group(1)); }
+    			log.debug("Line: "+line);
+    			m = Pattern.compile("(Contest Name|contest name): ([a-zA-Z0-9]*)").matcher(line);	
+	    		if ( m.find()) { logFile.setContest(m.group(2)); }
     			
 	    		if (isQso) {
-	    			LogQso qso = new LogQso();
+	    			//LogQso qso = new LogQso();
 	    			String qsoDate = "";
 	    			String qsoTime = "";
 	    			
-	    			m = Pattern.compile("<CALL:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setRcvCall(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
-		    		
-	    			m = Pattern.compile("<QSO_DATE:([0-9]*)>(.*)<").matcher(line);	
+	    			m = Pattern.compile("<(CALL|call):([0-9]*)>(.*)").matcher(line);	
 		    		if ( m.find()) { 
-		    			qsoDate = m.group(2).substring(0, Integer.parseInt(m.group(1))).substring(0, 4)+"-"+
-		    					  m.group(2).substring(0, Integer.parseInt(m.group(1))).substring(4, 6)+"-"+
-		    					  m.group(2).substring(0, Integer.parseInt(m.group(1))).substring(6, 8) ;
+		    			mqso.setRcvCall(m.group(3).substring(0, Integer.parseInt(m.group(2)))); 
+		    			log.debug("Call: "+m.group(3));
 		    		}
 		    		
-	    			m = Pattern.compile("<TIME_ON:([0-9]*)>(.*)<").matcher(line);	
+	    			m = Pattern.compile("<(QSO_DATE|qso_date):([0-9]*)>(.*)").matcher(line);	
 		    		if ( m.find()) { 
-		    			qsoTime = m.group(2).substring(0, Integer.parseInt(m.group(1))).substring(0, 4) ;
+		    			qsoDate = m.group(3).substring(0, Integer.parseInt(m.group(2))).substring(0, 4)+"-"+
+		    					  m.group(3).substring(0, Integer.parseInt(m.group(2))).substring(4, 6)+"-"+
+		    					  m.group(3).substring(0, Integer.parseInt(m.group(2))).substring(6, 8) ;
 		    		}
 		    		
-	    			m = Pattern.compile("<SECTION:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setRcvExch(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(TIME_ON|time_on):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { 
+		    			qsoTime = m.group(3).substring(0, Integer.parseInt(m.group(2))).substring(0, 4) ;
+		    		}
 		    		
-	    			m = Pattern.compile("<OPERATOR:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setSntCall(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(SECTION|section|NAME|name|sig_info):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setRcvExch(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
 		    		
-	    			m = Pattern.compile("<MODE:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setQsoMode(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(OPERATOR|operator):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setSntCall(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
 		    		
-	    			m = Pattern.compile("<FREQ:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setFreq(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(MODE|mode):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setQsoMode(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
 		    		
-	    			m = Pattern.compile("<RST_SENT:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setSntRst(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(FREQ|freq):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setFreq(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
 		    		
-	    			m = Pattern.compile("<RST_RCVD:([0-9]*)>(.*)<").matcher(line);	
-		    		if ( m.find()) { qso.setRcvRst(m.group(2).substring(0, Integer.parseInt(m.group(1)))); }
+	    			m = Pattern.compile("<(RST_SENT|rst_sent):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setSntRst(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
+		    		
+	    			m = Pattern.compile("<(RST_RCVD|rst_rcvd):([0-9]*)>(.*)").matcher(line);	
+		    		if ( m.find()) { mqso.setRcvRst(m.group(3).substring(0, Integer.parseInt(m.group(2)))); }
 
-	    			qso.setSntExch(logFile.getParkAbbr());
-	    			qso.setQsoDate(qsoDate+" "+qsoTime);
+	    			mqso.setSntExch(logFile.getParkAbbr());
+	    			if (!qsoDate.isEmpty() && qsoDate != null) {
+	    				if (mqso.getQsoDate() == null) {
+	    					mqso.setQsoDate(qsoDate);
+	    				} else {
+	    					mqso.setQsoDate(qsoDate+" "+mqso.getQsoDate());
+	    				}
+	    				
+	    			}
+	    			if (!qsoTime.isEmpty() && qsoTime != null) {
+	    				if (mqso.getQsoDate() == null) {
+	    					mqso.setQsoDate(qsoTime);
+	    				} else {
+	    					mqso.setQsoDate(mqso.getQsoDate()+" "+qsoTime);
+	    				}
+	    			}
+
 	    			
-	    			if (qso.isValid()) {
-	    				qsos.add(qso);
-	    			}
-	    			else
-	    			{	
-	    				System.out.println("Error invalid qso found!");
-	    			}
+	    			m = Pattern.compile("<(EOR|eor)>").matcher(line);	
+		    		if ( m.find()) { 
+		    			qsoComplete = true; 
+		    			log.debug("QSO is complete : "+line);
+		    		}
+		    		
+		    		if (qsoComplete) {
+		    			if (mqso.isValid()) {
+		    				qsos.add(mqso);
+		    				qsoComplete = false;
+		    				mqso = new LogQso();
+		    			}
+		    			else
+		    			{	
+		    				System.out.println("Error invalid qso found! QSO Date: "+mqso.getQsoDate());
+		    			}
+		    		}
 
 	    		}
-	    		m = Pattern.compile("<EOH>").matcher(line);	
-	    		if ( m.find()) { isQso = true; }
+	    		m = Pattern.compile("<(EOH|eoh)>").matcher(line);	
+	    		if ( m.find()) { 
+	    			isQso = true; 
+	    			log.debug("Is a QSO : "+line);
+	    		}
     			
     		}
     		
