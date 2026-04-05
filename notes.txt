@@ -1,0 +1,5 @@
+
+
+add to arguments 
+-Doracle.net.tns_admin=C:\Users\thack\OneDrive\Documents\OracleCloud\Wallet
+-Doracle.net.wallet_location=C:\Users\thack\OneDrive\Documents\OracleCloud\Wallet
