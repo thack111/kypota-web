@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import com.hacksnet.kypota.model.ContestLog;
@@ -24,19 +23,19 @@ public class ContestLogRepository {
 	
 	private JdbcTemplate jdbc;
 	private NamedParameterJdbcTemplate namedJdbc;
-	private SimpleJdbcCall jdbcCall;
+	//private SimpleJdbcCall jdbcCall;
 	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.jdbc = new JdbcTemplate(dataSource);
 		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
-		this.jdbcCall = new SimpleJdbcCall(dataSource);
+		//this.jdbcCall = new SimpleJdbcCall(dataSource);
 	}	
 	
 	
 	public int addLog (ContestLog log) {
 		
-		String sqlTicket = " select  kypota.log_seq.nextval as ticket_id from dual ";
+		String sqlTicket = " select nextval('kypota.log_seq') as ticket_id ";
 		int logId = jdbc.queryForObject(sqlTicket, Integer.class);
 		log.setLogId(logId);
 		
@@ -44,7 +43,7 @@ public class ContestLogRepository {
 						"   cat_operator, cat_assisted, cat_band, cat_mode, cat_power, cat_station, cat_transmitter, " +
 						"   claimed_score, operators, name, address, city, state, zip, country, email, grid_loc, soap_box, " +
 						"   time_start, time_end, raw_log, submitted_name, submitted_email, park_abbr) "+
-				     "values  (:log_id, sysdate, :log_type, :format, :location, :callsign, :club, :contest, " + 
+				     "values  (:log_id, now(), :log_type, :format, :location, :callsign, :club, :contest, " + 
 				        "   :cat_operator, :cat_assisted, :cat_band, :cat_mode, :cat_power, :cat_station, :cat_transmitter, " + 
 				        "   :claimed_score, :operators, :name, :address, :city, :state, :zip, :country, :email, :grid_loc, :soap_box, " + 
 				        "   :time_start, :time_end, :raw_log, :submitted_name, :submitted_email, :park_abbr)";
@@ -86,7 +85,7 @@ public class ContestLogRepository {
 			
 			
 			String qsoSql = "insert into kypota.qsos (log_id, qso_id, qso_mode, qso_date, snt_call, snt_rst, snt_exch, rcv_call, rcv_rst, rcv_exch, freq, transmitter_id)" + 
-					        "values  (:log_id, kypota.qso_seq.nextval, :qso_mode, to_date(:qso_date, 'YYYY-MM-DD HH24MI'), :snt_call, :snt_rst, :snt_exch, :rcv_call, :rcv_rst, :rcv_exch, :freq, :transmitter_id)";
+					        "values  (:log_id, nextval('kypota.qso_seq'), :qso_mode, to_date(:qso_date, 'YYYY-MM-DD HH24MI'), :snt_call, :snt_rst, :snt_exch, :rcv_call, :rcv_rst, :rcv_exch, :freq, :transmitter_id)";
 			SqlParameterSource namedParamQso = new MapSqlParameterSource().addValue("log_id", log.getLogId())
 																		.addValue("qso_mode", qso.getQsoMode())
 																		.addValue("qso_date", qso.getQsoDate())
@@ -101,9 +100,10 @@ public class ContestLogRepository {
 			namedJdbc.update(qsoSql, namedParamQso);
 		}
 		
-		jdbcCall.withProcedureName("ANALYZE_RESULTS");
-		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
-		jdbcCall.execute(in);
+//		jdbcCall.withProcedureName("analyze_results");
+//		//SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
+//		jdbcCall.execute();
+		jdbc.execute("CALL analyze_results()");
 		
 		return logAdded;
 	}
@@ -111,7 +111,7 @@ public class ContestLogRepository {
 	public int updateLog (ContestLog log) {
 		
 		String sql = "update kypota.logs " +
-				     "set 	 entered_on = sysdate, " +
+				     "set 	 entered_on = now(), " +
 				     "       log_type = :log_type, " +
 				     "       format = :format,  " +
 				     "       location = :location, " +
@@ -185,7 +185,7 @@ public class ContestLogRepository {
 			
 			
 			String qsoSql = "insert into kypota.qsos (log_id, qso_id, qso_mode, qso_date, snt_call, snt_rst, snt_exch, rcv_call, rcv_rst, rcv_exch, freq, transmitter_id)" + 
-					        "values  (:log_id, kypota.qso_seq.nextval, :qso_mode, to_date(:qso_date, 'YYYY-MM-DD HH24MI'), :snt_call, :snt_rst, :snt_exch, :rcv_call, :rcv_rst, :rcv_exch, :freq, :transmitter_id)";
+					        "values  (:log_id, nextval('kypota.qso_seq'), :qso_mode, to_date(:qso_date, 'YYYY-MM-DD HH24MI'), :snt_call, :snt_rst, :snt_exch, :rcv_call, :rcv_rst, :rcv_exch, :freq, :transmitter_id)";
 			SqlParameterSource namedParamQso = new MapSqlParameterSource().addValue("log_id", log.getLogId())
 																		.addValue("qso_mode", qso.getQsoMode())
 																		.addValue("qso_date", qso.getQsoDate())
@@ -200,9 +200,10 @@ public class ContestLogRepository {
 			namedJdbc.update(qsoSql, namedParamQso);
 		}
 		
-		jdbcCall.withProcedureName("ANALYZE_RESULTS");
-		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
-		jdbcCall.execute(in);
+//		jdbcCall.withProcedureName("ANALYZE_RESULTS");
+//		SqlParameterSource in = new MapSqlParameterSource().addValue("IN_CONTEST_YEAR", "2020");
+//		jdbcCall.execute(in);
+		jdbc.execute("CALL analyze_results()");
 		
 		return logAdded;
 	}

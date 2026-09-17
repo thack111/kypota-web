@@ -35,7 +35,7 @@ public class ResultsRepository {
 	public List<ResultsSummary> getResults (String type, String resultsYear) {
 		// just placeholder.. need actual implementation.
 
-		String whereCri = "where  trunc(entered_on, 'YYYY') = trunc(to_date('"+resultsYear+"', 'YYYY'), 'YYYY') ";
+		String whereCri = "where  date_trunc('year', entered_on) = '"+resultsYear+"-01-01' ";
 		if (type.equals("Hunters")) {
 			whereCri += "and l.park_abbr = 'Hunter' and l.operators not in ('K4MSU','K4Y','K4E','W4GZ') ";
 		}
@@ -45,7 +45,7 @@ public class ResultsRepository {
 		
 		String sql = "select  l.log_id, l.submitted_name, l.submitted_email, l.park_abbr, " + 
 		 			 "        q.num_qso_points, q.num_p2p,  q.num_bonus, q.num_parks, " + 
-	 				 "        (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end as total_score " + 
+	 				 "        (coalesce(num_qso_points, 0) + (coalesce(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end as total_score " + 
 					 "from    kypota.logs l " + 
 					 "    left outer join (select log_id, " + 
 					 "                            count(*) as num_qso_points," + 
@@ -56,7 +56,7 @@ public class ResultsRepository {
 					 "                    where   dup = 0 " +  
 					 "                    group by log_id) q on l.log_id = q.log_id " + 
 					 whereCri +
-					 "order by (nvl(num_qso_points, 0) + (nvl(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end desc";
+					 "order by (coalesce(num_qso_points, 0) + (coalesce(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end desc";
 		if (type.matches("Hunters|Parks")) {
 			sql = "select log_id, submitted_name, submitted_email, park_abbr, num_qso_points, num_p2p, num_bonus, num_parks, total_score " +
 				  "from  (" + sql + ") where rownum < 6 ";
@@ -83,10 +83,10 @@ public class ResultsRepository {
 	public List<ContestYear> getContestYears () {
 		
 		String sql = String.join(" ", 
-				"select to_char(trunc(entered_on, 'YYYY'), 'YYYY') as year ", 
+				"select to_char(date_trunc('year', entered_on), 'YYYY') as year ", 
 				"from 	kypota.logs  where entered_on is not null ",
-				"group by trunc(entered_on, 'YYYY') ",
-				"order by trunc(entered_on, 'YYYY') ");
+				"group by date_trunc('year', entered_on) ",
+				"order by date_trunc('year', entered_on) ");
 		return jdbc.query(sql, 
 				new RowMapper<ContestYear>() {
 			public ContestYear mapRow(ResultSet rs, int rowNum) throws SQLException {
