@@ -59,7 +59,7 @@ public class ResultsRepository {
 					 "order by (coalesce(num_qso_points, 0) + (coalesce(num_bonus, 0) * 3)) * case when q.num_parks > 1 then q.num_parks else 1 end desc";
 		if (type.matches("Hunters|Parks")) {
 			sql = "select log_id, submitted_name, submitted_email, park_abbr, num_qso_points, num_p2p, num_bonus, num_parks, total_score " +
-				  "from  (" + sql + ") where rownum < 6 ";
+				  "from  (" + sql + ") limit 5 ";
 		}
 		
 		return jdbc.query(sql, 
